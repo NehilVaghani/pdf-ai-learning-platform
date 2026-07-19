@@ -1,3 +1,5 @@
+from pydoc import text
+
 from fastapi import APIRouter, UploadFile, File, Form
 import shutil
 import os
@@ -41,8 +43,14 @@ async def upload_pdf(
 
     quiz = generate_quiz(text)
     flashcards = generate_flashcards(text)
-    course = generate_course(text)
-    
+    try:
+        course = generate_course(text)
+        print("COURSE GENERATED:")
+        print(course)
+    except Exception as e:
+        print("COURSE ERROR:", e)
+        course = ""
+
     # Save to Supabase
     save_pdf(
         user_id=user_id,

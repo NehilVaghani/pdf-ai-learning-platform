@@ -80,10 +80,8 @@ PDF:
 
     return ask_gemini(prompt)
 
-    def generate_course(text: str):
-
-        prompt = f"""
-        
+def generate_course(text: str):
+    prompt = f"""
 You are an expert course creator.
 
 Convert the following PDF into a professional e-learning course.
