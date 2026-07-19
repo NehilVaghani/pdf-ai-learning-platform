@@ -79,3 +79,46 @@ PDF:
 """
 
     return ask_gemini(prompt)
+
+    def generate_course(text: str):
+
+        prompt = f"""
+        
+You are an expert course creator.
+
+Convert the following PDF into a professional e-learning course.
+
+Return the response in this format:
+
+# Course Title
+
+# Course Description
+
+# Estimated Learning Time
+
+# Difficulty Level
+
+# Learning Objectives
+
+# Prerequisites
+
+# Table of Contents
+
+## Chapter 1
+### Lesson 1
+Explanation
+
+Key Takeaways
+
+Real World Example
+
+Summary
+
+Repeat for all chapters.
+
+PDF Content:
+
+{text}
+"""
+
+    return ask_gemini(prompt)

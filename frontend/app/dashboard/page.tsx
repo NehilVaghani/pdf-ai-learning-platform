@@ -16,6 +16,7 @@ export default function Dashboard() {
   const [answer, setAnswer] = useState("");
   const [loading, setLoading] = useState(false);
   const [chatLoading, setChatLoading] = useState(false);
+  const [course, setCourse] = useState("");
 
   useEffect(() => {
     checkUser();
@@ -61,7 +62,7 @@ export default function Dashboard() {
 
     try {
       const response = await fetch(
-        "http://127.0.0.1:8000/pdf/upload",
+        "https://pdf-ai-learning-platform-backend.onrender.com/pdf/upload",
         {
           method: "POST",
           body: formData,
@@ -74,7 +75,7 @@ export default function Dashboard() {
         setSummary(data.summary);
         setQuiz(data.quiz);
         setFlashcards(data.flashcards);
-
+        setCourse(data.course);
         setQuestion("");
         setAnswer("");
       } else {
@@ -95,7 +96,7 @@ export default function Dashboard() {
 
     try {
       const response = await fetch(
-        "http://127.0.0.1:8000/chat/ask",
+        "https://pdf-ai-learning-platform-backend.onrender.com/chat/ask",
         {
           method: "POST",
           headers: {
@@ -209,6 +210,18 @@ export default function Dashboard() {
 
           </div>
         )}
+
+        {course && (
+  <div className="bg-purple-50 rounded-xl shadow mt-8 p-6">
+    <h2 className="text-3xl font-bold text-purple-700 mb-4">
+      📚 AI Course
+    </h2>
+
+    <pre className="whitespace-pre-wrap text-gray-800">
+      {course}
+    </pre>
+  </div>
+)}
 
         {summary && (
           <div className="bg-white rounded-xl shadow mt-8 p-6">

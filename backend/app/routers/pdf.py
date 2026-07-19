@@ -7,6 +7,7 @@ from app.services.pdf_service import (
     summarize_text,
     generate_quiz,
     generate_flashcards,
+    generate_course,
 )
 
 from app.services.chat_service import set_pdf_text
@@ -37,9 +38,11 @@ async def upload_pdf(
 
     # Generate AI content
     summary = summarize_text(text)
+
     quiz = generate_quiz(text)
     flashcards = generate_flashcards(text)
-
+    course = generate_course(text)
+    
     # Save to Supabase
     save_pdf(
         user_id=user_id,
@@ -47,6 +50,7 @@ async def upload_pdf(
         summary=summary,
         quiz=quiz,
         flashcards=flashcards,
+        course=course,
     )
 
     return {
@@ -55,4 +59,5 @@ async def upload_pdf(
         "summary": summary,
         "quiz": quiz,
         "flashcards": flashcards,
+        "course": course,
     }
