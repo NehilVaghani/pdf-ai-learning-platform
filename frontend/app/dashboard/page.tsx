@@ -212,16 +212,15 @@ export default function Dashboard() {
         )}
 
         {course && (
-  <div className="bg-purple-50 rounded-xl shadow mt-8 p-6">
-    <h2 className="text-3xl font-bold text-purple-700 mb-4">
-      📚 AI Course
-    </h2>
-
-    <pre className="whitespace-pre-wrap text-gray-800">
-      {course}
-    </pre>
-  </div>
-)}
+          <div className="bg-purple-50 rounded-xl shadow mt-8 p-6">
+            <h2 className="text-3xl font-bold text-purple-700 mb-4">
+              📚 AI Course
+            </h2>
+            <pre className="whitespace-pre-wrap text-gray-800">
+             {course}
+             </pre>
+             </div>
+             )}
 
         {summary && (
           <div className="bg-white rounded-xl shadow mt-8 p-6">
