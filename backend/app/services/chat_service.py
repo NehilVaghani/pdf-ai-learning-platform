@@ -1,30 +1,41 @@
 import os
 from dotenv import load_dotenv
-import google.generativeai as genai
+from groq import Groq
 
 load_dotenv()
 
-genai.configure(api_key=os.getenv("GEMINI_API_KEY"))
+client = Groq(api_key=os.getenv("GROQ_API_KEY"))
 
 pdf_text = ""
+
 
 def set_pdf_text(text):
     global pdf_text
     pdf_text = text
 
+
 def ask_pdf(question: str):
     prompt = f"""
-Answer the user's question only from the PDF content.
+Answer only using the PDF.
 
 PDF:
 
 {pdf_text}
 
 Question:
+
 {question}
 """
 
-    model = genai.GenerativeModel("gemini-3.5-flash")
-    response = model.generate_content(prompt)
+    response = client.chat.completions.create(
+        model="llama-3.3-70b-versatile",
+        messages=[
+            {
+                "role": "user",
+                "content": prompt,
+            }
+        ],
+        temperature=0.2,
+    )
 
-    return response.text
+    return response.choices[0].message.content

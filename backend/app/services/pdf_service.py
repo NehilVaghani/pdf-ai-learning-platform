@@ -1,11 +1,11 @@
 import fitz
 import os
 from dotenv import load_dotenv
-import google.generativeai as genai
+from groq import Groq
 
 load_dotenv()
 
-genai.configure(api_key=os.getenv("GEMINI_API_KEY"))
+client = Groq(api_key=os.getenv("GROQ_API_KEY"))
 
 
 def extract_text_from_pdf(file_path: str):
@@ -19,106 +19,94 @@ def extract_text_from_pdf(file_path: str):
     return text
 
 
-def ask_gemini(prompt: str):
-    try:
-        model = genai.GenerativeModel("gemini-3.5-flash")
+def ask_ai(prompt: str):
+    response = client.chat.completions.create(
+        model="llama-3.3-70b-versatile",
+        messages=[
+            {
+                "role": "user",
+                "content": prompt,
+            }
+        ],
+        temperature=0.3,
+    )
 
-        response = model.generate_content(prompt)
-
-        return response.text
-
-    except Exception as e:
-        print("Gemini Error:", e)
-        raise
+    return response.choices[0].message.content
 
 
 def summarize_text(text: str):
     prompt = f"""
-Summarize the following PDF in simple bullet points.
+Summarize this PDF in simple bullet points.
 
 {text}
 """
 
-    return ask_gemini(prompt)
+    return ask_ai(prompt)
 
 
 def generate_quiz(text: str):
     prompt = f"""
-Read the following PDF text and generate 10 Multiple Choice Questions.
+Generate 10 MCQs from this PDF.
 
 Format:
 
-Q1.
-A.
-B.
-C.
-D.
-Answer:
-
-PDF:
+Q1
+A
+B
+C
+D
+Answer
 
 {text}
 """
 
-    return ask_gemini(prompt)
+    return ask_ai(prompt)
 
 
 def generate_flashcards(text: str):
     prompt = f"""
-Read the following PDF and create 10 flashcards.
+Generate 10 flashcards.
 
 Format:
 
-Question:
-Answer:
+Question
+Answer
+
+{text}
+"""
+
+    return ask_ai(prompt)
+
+
+def generate_course(text: str):
+    prompt = f"""
+Create a complete structured learning course.
+
+Include:
+
+Course Title
+
+Description
+
+Objectives
+
+Prerequisites
+
+Estimated Time
+
+Difficulty
+
+Chapters
+
+Lessons
+
+Examples
+
+Summary
 
 PDF:
 
 {text}
 """
 
-    return ask_gemini(prompt)
-
-
-def generate_course(text: str):
-    prompt = f"""
-You are an expert course creator.
-
-Convert the following PDF into a professional e-learning course.
-
-Return the response in this format:
-
-# Course Title
-
-# Course Description
-
-# Estimated Learning Time
-
-# Difficulty Level
-
-# Learning Objectives
-
-# Prerequisites
-
-# Table of Contents
-
-## Chapter 1
-
-### Lesson 1
-
-Explanation
-
-Key Takeaways
-
-Real World Example
-
-Summary
-
-Create multiple chapters and lessons based on the PDF.
-
-PDF Content:
-
-{text}
-"""
-
-    return ask_gemini(prompt)
+    return ask_ai(prompt)
