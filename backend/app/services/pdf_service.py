@@ -1,12 +1,10 @@
 import fitz
 import os
 from dotenv import load_dotenv
-from google import genai
-
+import google.generativeai as genai
 load_dotenv()
 
-client = genai.Client(api_key=os.getenv("GEMINI_API_KEY"))
-
+genai.configure(api_key=os.getenv("GEMINI_API_KEY"))
 
 def extract_text_from_pdf(file_path: str):
     doc = fitz.open(file_path)
