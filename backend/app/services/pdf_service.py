@@ -2,9 +2,11 @@ import fitz
 import os
 from dotenv import load_dotenv
 import google.generativeai as genai
+
 load_dotenv()
 
 genai.configure(api_key=os.getenv("GEMINI_API_KEY"))
+
 
 def extract_text_from_pdf(file_path: str):
     doc = fitz.open(file_path)
@@ -19,10 +21,9 @@ def extract_text_from_pdf(file_path: str):
 
 def ask_gemini(prompt: str):
     try:
-        response = client.models.generate_content(
-            model="gemini-3.5-flash",
-            contents=prompt,
-        )
+        model = genai.GenerativeModel("gemini-1.5-flash")
+
+        response = model.generate_content(prompt)
 
         return response.text
 
@@ -78,6 +79,7 @@ PDF:
 
     return ask_gemini(prompt)
 
+
 def generate_course(text: str):
     prompt = f"""
 You are an expert course creator.
@@ -101,7 +103,9 @@ Return the response in this format:
 # Table of Contents
 
 ## Chapter 1
+
 ### Lesson 1
+
 Explanation
 
 Key Takeaways
@@ -110,7 +114,7 @@ Real World Example
 
 Summary
 
-Repeat for all chapters.
+Create multiple chapters and lessons based on the PDF.
 
 PDF Content:
 
