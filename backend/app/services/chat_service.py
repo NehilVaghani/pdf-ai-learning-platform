@@ -1,22 +1,20 @@
 import os
 from dotenv import load_dotenv
-from google import genai
+import google.generativeai as genai
 
 load_dotenv()
 
-client = genai.Client(api_key=os.getenv("GEMINI_API_KEY"))
+genai.configure(api_key=os.getenv("GEMINI_API_KEY"))
 
 pdf_text = ""
 
-def set_pdf_text(text: str):
+def set_pdf_text(text):
     global pdf_text
     pdf_text = text
 
-def ask_pdf(question: str):
+def ask_question(question: str):
     prompt = f"""
-You are an AI tutor.
-
-Use ONLY the following PDF content to answer.
+Answer the user's question only from the PDF content.
 
 PDF:
 
@@ -24,13 +22,9 @@ PDF:
 
 Question:
 {question}
-
-Answer in simple language.
 """
 
-    response = client.models.generate_content(
-        model="gemini-3.5-flash",
-        contents=prompt
-    )
+    model = genai.GenerativeModel("gemini-3.5-flash")
+    response = model.generate_content(prompt)
 
     return response.text

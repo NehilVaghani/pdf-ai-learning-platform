@@ -21,7 +21,7 @@ def extract_text_from_pdf(file_path: str):
 
 def ask_gemini(prompt: str):
     try:
-        model = genai.GenerativeModel("gemini-1.5-flash")
+        model = genai.GenerativeModel("gemini-3.5-flash")
 
         response = model.generate_content(prompt)
 
