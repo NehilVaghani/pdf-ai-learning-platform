@@ -12,7 +12,7 @@ def set_pdf_text(text):
     global pdf_text
     pdf_text = text
 
-def ask_question(question: str):
+def ask_pdf(question: str):
     prompt = f"""
 Answer the user's question only from the PDF content.
 
