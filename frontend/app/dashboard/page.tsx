@@ -71,16 +71,20 @@ export default function Dashboard() {
 
       const data = await response.json();
 
-      if (data.success) {
-        setSummary(data.summary);
-        setQuiz(data.quiz);
-        setFlashcards(data.flashcards);
-        setCourse(data.course);
-        setQuestion("");
-        setAnswer("");
-      } else {
-        alert("Upload Failed");
-      }
+if (data.success) {
+  setSummary(data.summary);
+  setQuiz(data.quiz);
+  setFlashcards(data.flashcards);
+  setCourse(data.course);
+
+  localStorage.setItem("ai_course", data.course);
+
+  setQuestion("");
+  setAnswer("");
+} else {
+  alert("Upload Failed");
+}
+    
     } catch (error) {
       console.error(error);
       alert("Backend Error");
@@ -162,6 +166,12 @@ export default function Dashboard() {
             onChange={uploadPDF}
             className="border rounded-lg p-3"
           />
+          <button
+           onClick={() => router.push("/course")}
+           className="mt-6 bg-purple-600 hover:bg-purple-700 text-white px-6 py-3 rounded-lg"
+>
+             📚 Open AI Course
+          </button>
 
           {loading && (
             <div className="mt-6 text-blue-600 text-lg font-semibold">
